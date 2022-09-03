@@ -3,16 +3,14 @@ use strict;
 use warnings;
 
 if(@ARGV != 4){
- print "\nFonctionnement:\n> perl process_Genlib.pl <fichier Proband_Haplotypes.txt> <fichier *.hap> <fichier *.map> <taille de la sequence en Mb>\n\n";
+ print "\nFonctionnement:\n> perl process_Genlib.pl <fichier Proband_Haplotypes.txt> <fichier *.hap> <fichier *.map> <taille de la sequence en BP>\n\n";
  exit;
 }
 
 my $fichier = $ARGV[0];
 my $anc     = $ARGV[1];
 my $posFile = $ARGV[2];
-my $bpTot   = $ARGV[3]; # donne en Mb donc on va *1000000
-
-$bpTot = $bpTot*1000000;
+my $bpTot   = $ARGV[3]; 
 
 
 ## FICHIER ANC
@@ -50,7 +48,6 @@ open(FILE, $fichier)  || die "peut pas ouvrir $fichier\n";
 open(OUT, ">", $fichierOut)  || die "peut pas ouvrir $fichierOut\n";
 
 my $num=0; my $nbSim; my $nbPro; my $sim=0;
-my $nbRec; my $nbMeioses;# my $nbMatch;
 
 while(my $line = <FILE>)
 {
@@ -77,12 +74,6 @@ while(my $line = <FILE>)
    my @hap1  = split(";", $tmp[1]);
    my @hap2  = split(";", $tmp[2]);
 
-   # on commence les donnees d'haplotypes. Comme on travaille sur une genealogie a la fois, nbRec et nbMeiose ne change pas.
-   if($num==1) { 
-    $nbRec    = $specs[2];
-    $nbMeioses = $specs[3];
-   }
-   
    # on vient de passer à une nouvelle simulation
    if($sim != $specs[0]) {
     $sim = $specs[0];
@@ -96,13 +87,10 @@ while(my $line = <FILE>)
    shift @hap2;
    # ecrire les sequences pour chaque proband, un haplotype par ligne, donc 2 lignes par proband.
    print OUT $sim." ".$proID." ";
-#   if($proID==408828){ print "@hap1\n"; }
-   getSequence(@hap1); #, $sim, $proID);
+   getSequence(@hap1); 
    
    print OUT $sim." ".$proID." ";
-   getSequence(@hap2); #, $sim, $proID);
-#   if($sim == 736){ exit; }
-#   exit;
+   getSequence(@hap2);
  }
  $num++;
 }
@@ -111,9 +99,7 @@ print "Number of :\n  simulations: $nbSim\n  probands: $nbPro\n";#  matches: $nb
 close(FILE);
 
 sub getSequence{
-#  my $proID = pop(@_);
-#  my $sim = pop(@_);
-#  print @_."\n";
+
   my @hap = @_;
   my $deb = 0;
   my $fin;
@@ -129,12 +115,11 @@ sub getSequence{
     my $ind1 = $hap[2*$i];
     my $pos1 = $hap[2*$i+1];
     
-    if($pos1 == 1) {
+    if($pos1 == $boTot) {
      $fin = @pos;
     }
     else {
-     # on traduit la pos relative en pos absolue et on va chercher l'indice auquel ca correspond.
-     my $posRec = $pos1 * $bpTot;
+     my $posRec = $pos1 
      # on cherche la position de recombinaison.
      $fin=$deb;
      #la recombinaison peut arriver entre le dernier SNP et la fin de la sequence.
@@ -144,8 +129,7 @@ sub getSequence{
          if($pos[$fin] - $posRec < 0){ $fin++; }
          last;
        }
-     } #$fin < (@pos-1) & 
-#    if($sim == 735 & $proID == "408366"){ print $deb." - ".$fin." ; ".$pos1." - ".$posRec." ; ".$pos[$fin-1]." de ".$pos[@pos-1]."(".@pos.")\n"; }
+     } 
     }
     $seqTester = $seqTester + length(substr($seqAnc{$ind1}, $deb, ($fin-$deb) ));
     print OUT substr($seqAnc{$ind1}, $deb, ($fin-$deb) );

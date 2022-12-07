@@ -1,0 +1,39 @@
+---
+output: html_document
+---
+## Using **`gen.simuHaplo_compare_IBD`**
+This function is meant to analyze the output of `gen.simuHaplo`. Specifically, given a pair of probands, it will return details on the diploid IBD sharing between the pair's haplotypes for every simulation. Since `gen.simuHaplo` describes the haplotypes in terms of segments (BP positions) along the chromosome (each segment labelled by the ID of the founder chromosome it is inherited from), then haplotypes can be assessed to be shared IBD if they have the same ancestral origin at the same region of the chromosome. To identify IBD segments this function looks for any overlaps between segments from the same unique founder chromosome.  
+
+First: load GENLIB, and  the genealogy:
+```{r, message= FALSE, warning=FALSE}
+library(GENLIB)
+library(readr)
+example_gen_table <- read_csv("example_genealogy.csv")
+```
+```{r, warning=FALSE}
+gen_obj           <- gen.genealogy(example_gen_table)
+gen_obj
+```
+
+Then run the simulation:
+```{r}
+# we do not set all_nodes = 1, because we only need the proband haplotypes to compare
+BP_len = 290000000
+gen.simuHaplo(gen_obj ,pro=c(200,201), simulNo=200, model_params = c(1.98, 3.28), cM_len = c(198, 328), BP_len = BP_len)
+```
+We use the same parameters as the other examples, but we only simulate the haplotypes for 2 arbitrarily selected probands (ID: 200, 201). We do not simulate the rest of the genealogy because it would be unnecessary for this illustration. However, `gen.simuHaplo_compare_IBD` will still work on output for more than 2 probands, it will just ignore all probands other than the specified pair.  
+To use `gen.simuHaplo_compare_IBD` we only need to pass in the ID's for our proband pair, the BP length of the chromosome, and the path to the "Proband_Haplotypes.txt" file created from `gen.simuHaplo`. The function will print to the R console the exact BP positions for each IBD segment (for each haploid chromosome). This can be disabled by suppressing messages in R.  
+The function also returns a dataframe with the following columns: **simulNo**, **len_Shared_IBD**, **num_seg**, **mean_len**
+
+**simulNo** is the simulation number. The dataframe will only contain rows for simulations where the pair have non-zero IBD sharing.  
+**num_seg** is the total number of non-contiguous IBD segments. Divide by 2 to get an average for the pair. This number may be odd if one of the individuals is homozygous over a region shared IBD with the other individual. In this case the homozygous individual will have 2 IBD segments (one from each chromosome), while the other individual will have one (potentially longer) segment.  
+**pIBD** is the percent of the diploid chromosome shared IBD between the pair (percent IBD sharing). It is the total length shared IBD averaged over all haploid chromosomes.  
+**mean_len** the mean length of the IBD segments (in BP)  
+
+```{r, collapse=TRUE}
+x <- gen.simuHaplo_IBD_compare(200,201,BP_len,'Proband_Haplotypes.txt')
+head(x)
+```
+
+
+

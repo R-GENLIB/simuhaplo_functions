@@ -59,10 +59,6 @@ while(my $line = <FILE>)
    $nbPro = $tmp[1];
  }
  else{
-   # Le format: {1;342;540;5320}{0;69362.2;1}{0;18433.2;0.241942;...;18351.2;1}  :
-   #		{#sim;proID;nbRec;nbMeioses}
-   #		{composition de l'haplotype1}  : {0;individu1.haplotype;positionFin1;individu2.haplotype;positionFin2...;1}
-   #		{composition de l'haplotype2}  : {0;individu1.haplotype;positionFin1;individu2.haplotype;positionFin2...;1}
    
    # separation des 3 parties et on enleve les crochets de debut et fin :
    my @tmp  = split("\\}\\{", $line);
@@ -95,7 +91,7 @@ while(my $line = <FILE>)
  $num++;
 }
 
-print "Number of :\n  simulations: $nbSim\n  probands: $nbPro\n";#  matches: $nbMatch\n";
+print "Number of :\n  simulations: $nbSim\n  probands: $nbPro\n";
 close(FILE);
 
 sub getSequence{
@@ -115,11 +111,11 @@ sub getSequence{
     my $ind1 = $hap[2*$i];
     my $pos1 = $hap[2*$i+1];
     
-    if($pos1 == $boTot) {
+    if($pos1 == $bpTot) {
      $fin = @pos;
     }
     else {
-     my $posRec = $pos1 
+     my $posRec = $pos1 ;
      # on cherche la position de recombinaison.
      $fin=$deb;
      #la recombinaison peut arriver entre le dernier SNP et la fin de la sequence.

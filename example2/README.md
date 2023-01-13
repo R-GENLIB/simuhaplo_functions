@@ -45,7 +45,7 @@ gen_obj2 <- gen.branching(gen_obj, pro=c(222), ancestors = c(1034))
 gen.graph(gen_obj2, cex=0.70) #plot the genealogy
 ```
 
-![](example2_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+!<img src="gengraph.png" width=500><!-- -->
 
 We can see we have a founder with ID ‘1034’, and a descendant ‘222’
 connected by 6 possible paths of inheritance.

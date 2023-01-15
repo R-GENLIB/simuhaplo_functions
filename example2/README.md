@@ -1,10 +1,10 @@
 
 ### Using gen.simuHaplo_traceback
 
-the traceback function allows the user to specify a proband and an
-ancestor, and given the output of `gen.simuHaplo`, the traceback
+the traceback function allows the user to specify a proband and a
+founder, and given the output of `gen.simuHaplo` the traceback
 function will go through all the simulations, identify the simulations
-in which the proband inherits any segment from the specified ancestor,
+in which the proband inherits any segment from the specified founder,
 and then identify the path of inheritance.
 
 For this example we will use a small sub-tree of the 58942 individual
@@ -45,7 +45,7 @@ gen_obj2 <- gen.branching(gen_obj, pro=c(222), ancestors = c(1034))
 gen.graph(gen_obj2, cex=0.70) #plot the genealogy
 ```
 
-!<img src="gengraph.png" width=500><!-- -->
+<img src="gengraph.png" width=500><!-- -->
 
 We can see we have a founder with ID ‘1034’, and a descendant ‘222’
 connected by 6 possible paths of inheritance.
@@ -64,12 +64,15 @@ gen.simuHaplo(gen_obj2, model = 1, simulNo = 200, model_params = c(1.98, 3.28),
 Now that we have the simulation results we can use the traceback
 function to investigate the relationship between this proband and
 ancestor. For this we use the **gen.simuHaplo_traceback** function. The
-function takes the following parameters:  
-**gen: ** The genealogy object that was used for the simulation **proID:
-** The ID of the proband **ancestorID: ** ID of the founder. Any founder
+function requires the following parameters:    
+**gen:** The genealogy object that was used for the simulation.  
+**proID:** The ID of the proband.  
+**ancestorID:** ID of the founder. Any founder
 from this ancestor appearing in the proband haplotype will be traced
-back. **all_nodes_path: ** The path to the ‘All_nodes_haplotypes.txt’
-file created from the simulation. **proband_haplotypes_path: ** The path
+back.  
+**all_nodes_path:** The path to the ‘All_nodes_haplotypes.txt’
+file created from the simulation.  
+**proband_haplotypes_path:** The path
 to the ‘Proband_Haplotypes.txt’ file created from the simulation.
 
 ``` r
@@ -94,11 +97,12 @@ if a path does not end with the ancestor ID that means the path
 bifurcates at the last internal ancestor that was printed. If an
 internal ancestor is homozygous for the founder segment it is possible
 for it to transmit a longer segment that has been stitched together
-through a recombination. In this case the traceback is terminated at
-this internal ancestor.
+through a recombination. In this case the inheritance path for that segment
+will terminate at this internal ancestor.
 
 The function returns a dataframe that specifies the path, and the length
-of the segment.
+of the segment, for each occurance of the specified proband inheriting a
+segment from the specified founder.
 
 ``` r
 head(traceback)

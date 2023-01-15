@@ -65,14 +65,14 @@ Now that we have the simulation results we can use the traceback
 function to investigate the relationship between this proband and
 ancestor. For this we use the **gen.simuHaplo_traceback** function. The
 function requires the following parameters:    
-**gen:** The genealogy object that was used for the simulation.  
-**proID:** The ID of the proband.  
-**ancestorID:** ID of the founder. Any founder
+<ins>**gen:**</ins> The genealogy object that was used for the simulation.  
+<ins>**proID:**</ins> The ID of the proband.  
+<ins>**ancestorID:**</ins> ID of the founder. Any founder
 from this ancestor appearing in the proband haplotype will be traced
 back.  
-**all_nodes_path:** The path to the ‘All_nodes_haplotypes.txt’
+<ins>**all_nodes_path:**</ins> The path to the ‘All_nodes_haplotypes.txt’
 file created from the simulation.  
-**proband_haplotypes_path:** The path
+<ins>**proband_haplotypes_path:**</ins> The path
 to the ‘Proband_Haplotypes.txt’ file created from the simulation.
 
 ``` r

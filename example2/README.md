@@ -67,8 +67,8 @@ ancestor. For this we use the **gen.simuHaplo_traceback** function. The
 function requires the following parameters:    
 <ins>**gen:**</ins> The genealogy object that was used for the simulation.  
 <ins>**proID:**</ins> The ID of the proband.  
-<ins>**ancestorID:**</ins> ID of the founder. Any founder
-from this ancestor appearing in the proband haplotype will be traced
+<ins>**ancestorID:**</ins> ID of the founder. Any segment
+from this founder appearing in the proband haplotype will be traced
 back.  
 <ins>**all_nodes_path:**</ins> The path to the ‘All_nodes_haplotypes.txt’
 file created from the simulation.  

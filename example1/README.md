@@ -46,40 +46,39 @@ different folders. For simulating sub-chromosomal regions, treat the
 region as a ‘mini chromosome’ and use appropriate parameters. The
 function takes the following parameters:
 
-**gen** : genealogy object  
-**pro** : vector of proband ID’s to simulate. If not specified will
-default to all probands in the specified genealogy.  
-**ancestors** : Vector of founder ID’s to include. If not specified will
-default to all founders of the specified probands. Founders in the
-genealogy that are not included in this vector will have their
-haplotypes represented by “0”.  
-**simulNo** : Number of simulations to run.  
-**model** : Integer used to specify the model used to simulate meiosis.
+**`gen`** : The genealogy object created using `gen.genealogy`. Required.  
+**`pro`** : A vector of proband ID’s to simulate. Default is all individuals
+without children in the specified genealogy.  
+**`ancestors`** : A vector of founder ID’s to include. Default 
+to all founders of the specified probands. If some of the proband's
+founders are not specified in this vector then they will have their
+haplotypes represented with ID 0.  
+**`simulNo`** : Number of simulations to run. Defaults to 1.  
+**`model`** : Integer used to specify the model used to simulate meiosis.
 1 = Poisson model. 2 = Zero-truncated Poisson model. 3 = Gamma renewal
 process. Both the zero-truncated Poisson, and Gamma models are not
-appropriate for sub-chromosomal regions.  
-**model_params** : All the models require 1 parameter. **model_params**
-should be a vector of length 2, where the first element specifies the
-parameter for males, and the second for females. For details on the
-model parameters see the paper (cite).  
-**cM_len** : A vector of length 2. Length of the chromosome to be
+appropriate for sub-chromosomal regions. Defaults to 1.  
+**`model_params`** : Vector of length 2, where the first element specifies the
+parameter for males, and the second for females. Each model requires a single
+parameter but it is different for each model. For details on the model parameters
+see the paper (cite). Required parameter, no default.  
+**`cM_len`** : A vector of length 2. Length of the chromosome to be
 simulated in centimorgans. The first element should be the length for
-males, and the second for females.  
-**BP_len** : Integer value for the length of the chromosome in base
-pairs. Only a single value as it is the same for males and females.  
-**physical_map_female** : Option to specify the relationship between
-genetic length and physical length. A dataframe with required columns
-named “BP” and “cM”, where each row is a pair of points, and the map is
+males, and the second for females. Required parameter, no default.  
+**`BP_len`** : An integer value for the length of the chromosome in base
+pairs. Required parameter, no default value.    
+**`physical_map_female`** : An optional dataframe which specifies the relationship between
+genetic length and physical length. The dataframe must have 2 columns
+named “BP” and “cM”. Each row of this dataframe is a pair of points, and the map is
 constructed by linear interpolation of the specified points. The first
 row should be (0,0), and the last row (BP_len, cM_len). If not specified
 the map will be assumed to be linear across the chromosome.  
 **physical_map_male** : Same as above but for males.  
-**seed** : can seed the random number generator used, for replication
-purposes.  
+**seed** : An optional random integer seed that can be used for replication purposes.   
 **all_nodes** : Either 1 or 0. If 1 the function will produce an
 additional output file for the haplotypes of all the internal
-individuals of the genealogy (not just the probands).  
-**outDir** : Directory to write output files to. Default is the current
+individuals of the genealogy (not just the probands). Default is 0 (no internal haplotypes output).    
+**outDir** : A path string to the directory to write output files to. Default is the current
 working directory.
 
 For this example we will run 100 simulations on the above genealogy. We

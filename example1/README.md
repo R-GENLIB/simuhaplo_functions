@@ -73,12 +73,12 @@ named “BP” and “cM”. Each row of this dataframe is a pair of points, and
 constructed by linear interpolation of the specified points. The first
 row should be (0,0), and the last row (BP_len, cM_len). If not specified
 the map will be assumed to be linear across the chromosome.  
-**physical_map_male** : Same as above but for males.  
-**seed** : An optional random integer seed that can be used for replication purposes.   
-**all_nodes** : Either 1 or 0. If 1 the function will produce an
+**`physical_map_male`** : Same as above but for males.  
+**`seed`** : An optional random integer seed that can be used for replication purposes.   
+**`all_nodes`** : Either 1 or 0. If 1 the function will produce an
 additional output file for the haplotypes of all the internal
 individuals of the genealogy (not just the probands). Default is 0 (no internal haplotypes output).    
-**outDir** : A path string to the directory to write output files to. Default is the current
+**`outDir`** : A path string to the directory to write output files to. Default is the current
 working directory.
 
 For this example we will run 100 simulations on the above genealogy. We

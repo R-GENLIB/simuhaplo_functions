@@ -65,20 +65,20 @@ will print to the R console the exact BP positions for each IBD segment
 (for each haploid chromosome). This can be disabled by suppressing
 messages in R.  
 The function also returns a dataframe with the following columns:
-**simulNo**, **len_Shared_IBD**, **num_seg**, **mean_len**
+**`simulNo`**, **`len_Shared_IBD`**, **`num_seg`**, **`mean_len`**
 
-**simulNo** is the simulation number. The dataframe will only contain
+**`simulNo`** is the simulation number. The dataframe will only contain
 rows for simulations where the pair have non-zero IBD sharing.  
-**num_seg** is the total number of non-contiguous IBD segments. Divide
+**`num_seg`** is the total number of non-contiguous IBD segments. Divide
 by 2 to get an average for the pair. This number may be odd if one of
 the individuals is homozygous over a region shared IBD with the other
 individual. In this case the homozygous individual will have 2 IBD
 segments (one from each chromosome), while the other individual will
 have one (potentially longer) segment.  
-**pIBD** is the percent of the diploid chromosome shared IBD between the
+**`pIBD`** is the percent of the diploid chromosome shared IBD between the
 pair (percent IBD sharing). It is the total length shared IBD averaged
 over all haploid chromosomes.  
-**mean_len** the mean length of the IBD segments (in BP)
+**`mean_len`** the mean length of the IBD segments (in BP)
 
 ``` r
 x <- gen.simuHaplo_IBD_compare(200,201,BP_len,'Proband_Haplotypes.txt')

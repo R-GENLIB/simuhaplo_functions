@@ -8,7 +8,7 @@ in which the proband inherits any segment from the specified founder,
 and then identify the path of inheritance.
 
 For this example we will use a small sub-tree of the 58942 individual
-Montreal genealogy used in the other example.  
+example genealogy used in the other example.  
 Load in example genealogy:
 
 ``` r

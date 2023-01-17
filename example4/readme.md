@@ -1,4 +1,4 @@
-## Using reconstruct.pl
+## Using gen.simuHaplo_convert
 
 For this example we will use simulated haplotypes for a simple pedigree of 2 siblings (probands) and their grandparents (founders).  
 ![img](sample_gen.png)  

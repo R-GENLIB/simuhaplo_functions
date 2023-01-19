@@ -63,12 +63,16 @@ Now we can use the **gen.simuHaplo_traceback** function to identify
 every simulation where proband 408992 inherits a segment from founder
 863241 and identify the path of inheritance. The function takes the
 following parameters:  
-**gen: ** The genealogy object that was used for the simulation **proID:
-** The ID of the proband **ancestorID: ** ID of the founder. Any founder
+  
+**`gen:`** The genealogy object that was used for the simulation  
+**`proID:`** The ID of the proband  
+**`ancestorID:`** ID of the founder. Any founder
 from this ancestor appearing in the proband haplotype will be traced
-back. **all_nodes_path: ** The path to the ‘All_nodes_haplotypes.txt’
-file created from the simulation. **proband_haplotypes_path: ** The path
-to the ‘Proband_Haplotypes.txt’ file created from the simulation.
+back.  
+**`all_nodes_path:`** The path to the ‘All_nodes_haplotypes.txt’
+file created from the simulation.  
+**`proband_haplotypes_path:`** The path
+to the ‘Proband_Haplotypes.txt’ file created from the simulation.  
 
 ``` r
 traceback <- gen.simuHaplo_traceback(gen_obj, proID =408992, ancestorID = 863241, 

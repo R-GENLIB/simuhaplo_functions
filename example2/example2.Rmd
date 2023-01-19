@@ -1,43 +1,42 @@
 ---
-output: html_document
+output:
+  md_document:
+    variant: gfm
 ---
 ### Using gen.simuHaplo_traceback
 
-the traceback function allows the user to specify a proband and an ancestor, and given the output of `gen.simuHaplo`, the traceback function will go through all the simulations, identify the simulations in which the proband inherits any segment from the specified ancestor, and then identify the path of inheritance.  
+The traceback function allows the user to specify a proband and a founder, and given the output of `gen.simuHaplo`, the traceback function will go through all the simulations, identify the simulations in which the proband inherits any segment from the specified founder, and then identify the path of inheritance.  
 
-For this example we will use a small sub-tree of the 58942 individual Montreal genealogy used in the other example.  
-Load in example genealogy:
-```{r echo=TRUE, messages=FALSE, warning = FALSE}
+For this example we will use the same "genea140" sample genealogy
+```{r echo=TRUE, messages=FALSE, warning = FALSE, cache=TRUE}
 library(GENLIB)
-library(readr)
-genealogy_file <- read_csv("example_genealogy.csv", col_types = 'iiii')
-gen_obj <- gen.genealogy(genealogy_file)
+data(genea140)
+gen_obj <- gen.genealogy(genea140)
 gen_obj
 ```
-Create sub-tree for the proband and ancestor of interest:
-```{r, echo=TRUE, warning=FALSE}
-#create sub-genealogy to use for example
-gen_obj2 <- gen.branching(gen_obj, pro=c(222), ancestors = c(1034))
-gen.graph(gen_obj2, cex=0.75) #plot the genealogy
-```
-
-We can see we have a founder with ID '1034', and a descendant '222' connected by 6 possible paths of inheritance. 
 
 For this example we will simulate a hypothetical chromosome 1, with a length of 290,000,000 BP and genetic length of 198cM for males, and 328cM for females. We will use a Poisson process as the model of meiosis, and we will produce the all_nodes output which is required for the traceback.
-```{r,echo=TRUE, message=FALSE, warning=FALSE}
-gen.simuHaplo(gen_obj2, model = 1, simulNo = 200, model_params = c(1.98, 3.28), 
+```{r message=FALSE, warning=FALSE, cache=TRUE}
+gen.simuHaplo(gen_obj, model = 1, simulNo = 200, model_params = c(1.98, 3.28), 
               cM_len = c(198, 328), BP_len = 290000000, all_nodes = 1)
 ```
 
-Now that we have the simulation results we can use the traceback function to investigate the relationship between this proband and ancestor. For this we use the **gen.simuHaplo_traceback** function. The function takes the following parameters:  
+Now that we have the simulation results we can use the traceback function to investigate the relationship between any of the simulated probands and a select founder. For this illustration we arbitrarily pick a proband (can see a list of probands with `gen.pro()`), and one of their founders (can get founders with `gen.findFounders()`). For this example we will use proband 408992 and founder 863241. First let us visualize the relationship:
+
+```{r, echo=TRUE, message=FALSE, warning=FALSE, cache=TRUE}
+sub_genealogy <- gen.branching(gen_obj, 408992)
+gen.graph(sub_genealogy, cex=0.5)
+```
+
+Now we can use the **gen.simuHaplo_traceback** function to identify every simulation where proband 408992 inherits a segment from founder 863241 and identify the path of inheritance. The function takes the following parameters:  
 **gen: ** The genealogy object that was used for the simulation
 **proID: ** The ID of the proband 
 **ancestorID: ** ID of the founder. Any founder from this ancestor appearing in the proband haplotype will be traced back.
 **all_nodes_path: ** The path to the 'All_nodes_haplotypes.txt' file created from the simulation.
 **proband_haplotypes_path: ** The path to the 'Proband_Haplotypes.txt' file created from the simulation.
 
-```{r, collapse=TRUE, echo=TRUE}
-traceback <- gen.simuHaplo_traceback(gen_obj2, proID =222, ancestorID = 1034, 
+```{r, collapse=TRUE, echo=TRUE, cache=TRUE}
+traceback <- gen.simuHaplo_traceback(gen_obj, proID =408992, ancestorID = 863241, 
                                      all_nodes_path = 'All_nodes_haplotypes.txt',
                                      proband_haplotypes_path = 'Proband_Haplotypes.txt')
 ```
@@ -46,7 +45,7 @@ The traceback function will print all the paths that it encounters in the simula
   
 The function returns a dataframe that specifies the path, and the length of the segment.
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, cache=TRUE}
 head(traceback)
 ```
 

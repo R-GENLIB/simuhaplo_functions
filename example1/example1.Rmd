@@ -1,22 +1,26 @@
 ---
-output: html_document 
+output:
+  md_document:
+    variant: gfm
 ---
 
 ### Using `gen.simuHaplo`
 This example will show how to use `gen.simuHaplo` to drop uniquely labelled founder genotypes down a genealogy to create proband haplotypes.  
 
-First load `GENLIB`, the genealogy file, and create a genealogy object.
+First load `GENLIB`
 
 ```{r, warning=FALSE, message=FALSE}
 library(GENLIB)
-library(readr)
-genealogy_file <- read_csv("example_genealogy.csv", col_types = 'iiii')
 ```
-
-The genealogy file must use integer ID's, and contain the 'ind', 'mother', 'father' columns. 
+For this example we will use the example genealogy "genea140" that comes with GENLIB.
+```{r, warning=FALSE}
+data(genea140)
+head(genea140)
+```
+The genealogy file must use integer ID's, and contain the 'ind', 'mother', 'father' columns.   
 Use the `gen.genealogy` function to create a genealogy object
 ```{r warning=FALSE}
-gen_obj <- gen.genealogy(genealogy_file)
+gen_obj <- gen.genealogy(genea140)
 gen_obj
 ```
 
@@ -36,20 +40,22 @@ Now we can simulate transmission of haplotypes from founders to probands using `
 **all_nodes** : Either 1 or 0. If 1 the function will produce an additional output file for the haplotypes of all the internal individuals of the genealogy (not just the probands).  
 **outDir** : Directory to write output files to. Default is the current working directory.   
 
-For this example we will run 100 simulations on the above genealogy. We will simulate a hypothetical chromosome 1 with a length of 290,000,000 BP. We use the Poisson process model of meiosis, so the parameters are the expected number of recombinations.
+For this example we will run 100 simulations on the above genealogy. We will simulate a hypothetical chromosome 1 with a length of 290,000,000 BP. We use the Poisson process model of meiosis, so the parameters are the expected number of recombinations. In this case the model parameters are the same as the Morgan length of the region we are simulating, but for other models of meiosis this is not the case so we need to specify the genetic length of the region separately (`cM_len` parameter).
 ```{r cache=TRUE, message=FALSE}
 #print processor specs for the benchmark
 specs <- read.csv(text = system("systeminfo /FO csv", intern = TRUE))
 print(specs$Processor.s.)
 
-start_time <- Sys.time()
+start_time <- Sys.time() #get speed of simulation
+
 gen.simuHaplo(gen_obj, model = 1, simulNo = 100, model_params = c(1.98, 3.28), 
               cM_len = c(198, 328), BP_len = 290000000, all_nodes = 1)
 end_time <- Sys.time()
+
 print(end_time - start_time)
 ```
   
-The function will create the file "Proband_Haplotypes.txt" in the specified directory. If **all_nodes** was set to 1 then it will also create the file "All_nodes_haplotypes.txt".  
+The function will create the file "Proband_Haplotypes.txt" in the specified directory. If the **all_nodes** parameter were set to 1 then it would also create the file "All_nodes_haplotypes.txt".  
 
 ### Output files    
 First we will look at the structure of the "Proband_Haplotypes.txt" output file:
